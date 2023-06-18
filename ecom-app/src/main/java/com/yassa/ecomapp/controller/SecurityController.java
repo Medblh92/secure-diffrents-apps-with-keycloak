@@ -35,7 +35,7 @@ public class SecurityController {
         attributes.addAttribute("referrer_uri", request.getHeader("referer"));
 
 
-        return "redirect:"+ deployment.getAccountUrl() + "/password";
+        return "redirect:"+ deployment.getAccountUrl() + "/#/security/signingin";
     }
 
 

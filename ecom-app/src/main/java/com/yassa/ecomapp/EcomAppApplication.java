@@ -20,9 +20,9 @@ public class EcomAppApplication {
 	CommandLineRunner start(ProductRepository productRepository ) {
 		return  args -> {
 
-			productRepository.save(new Product(null, "ordi HP", 850));
-			productRepository.save(new Product(null, "imprimante LX HP", 150));
-			productRepository.save(new Product(null, "Iphone X ", 1150));
+			productRepository.save(new Product(null, "ordi HP", 850,"ecom-realm"));
+			productRepository.save(new Product(null, "imprimante LX HP", 150,"ecom-realm"));
+			productRepository.save(new Product(null, "Iphone X ", 1150,"ecom-realm"));
 
 			productRepository.findAll().forEach(product -> {
 				System.out.println(product.getName());

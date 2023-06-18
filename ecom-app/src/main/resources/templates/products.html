@@ -16,9 +16,10 @@
     <table class="table">
         <tr><th>ID</th><th>Name</th><th>Price</th></tr>
         <tr th:each="p:${products}">
-            <td th:text="${p.id}"></td>
-            <td th:text="${p.name}"></td>
-            <td th:text="${p.price}"></td>
+            
+            <td th:if="${p.tenant==tenant}" th:text="${p.id}"></td>
+            <td th:if="${p.tenant==tenant}" th:text="${p.name}"></td>
+            <td th:if="${p.tenant==tenant}" th:text="${p.price}"></td>
 
 
 
