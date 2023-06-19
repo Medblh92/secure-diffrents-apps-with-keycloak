@@ -17,10 +17,10 @@
         <tr><th>ID</th><th>FirstName</th><th>LastName</th><th>Email</th></tr>
         <tr th:each="u:${users}">
             
-            <td  th:text="${u.Id}"></td>
-            <td  th:text="${u.firstName}"></td>
-            <td  th:text="${u.lastName}"></td>
-            <td th:text="${u.email}"></td>
+            <td  th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.Id}"></td>
+            <td  th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.firstName}"></td>
+            <td  th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.lastName}"></td>
+            <td th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.email}"></td>
 
 
 

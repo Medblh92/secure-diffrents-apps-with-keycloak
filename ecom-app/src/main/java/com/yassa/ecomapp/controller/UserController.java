@@ -5,6 +5,8 @@
 package com.yassa.ecomapp.controller;
 
 import com.yassa.ecomapp.service.KeycloakUserService;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -45,11 +47,16 @@ public class UserController {
     @GetMapping("/addUser")
     public String addUser(HttpServletRequest request,HttpServletResponse response,Model model){
       // Create a new UserRepresentation with the desired user attributes
+      // Create a map for custom attributes
+Map<String, List<String>> attributes = new HashMap<>();
+attributes.put("tenantId", Collections.singletonList("ecom-realm"));
+
         UserRepresentation user = new UserRepresentation();
         user.setUsername("john.doe");
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setEmail("john.doe@example.com");
+        user.setAttributes(attributes);
 keycloakUserService.addUser(user);
      List<UserRepresentation> users=  keycloakUserService.getAllUsers();
      KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder
