@@ -42,6 +42,26 @@ public class UserController {
         return "users";
     }
     
+    @GetMapping("/addUser")
+    public String addUser(HttpServletRequest request,HttpServletResponse response,Model model){
+      // Create a new UserRepresentation with the desired user attributes
+        UserRepresentation user = new UserRepresentation();
+        user.setUsername("john.doe");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setEmail("john.doe@example.com");
+keycloakUserService.addUser(user);
+     List<UserRepresentation> users=  keycloakUserService.getAllUsers();
+     KeycloakAuthenticationToken authentication = (KeycloakAuthenticationToken) SecurityContextHolder
+            .getContext().getAuthentication();
+     Map<String, Object> customClaims = authentication.getAccount().getKeycloakSecurityContext()
+            .getToken().getOtherClaims();
+        System.out.println(customClaims.get("tenants"));
+        model.addAttribute("tenant", customClaims.get("tenants"));
+        model.addAttribute("users", users);
+     
+        return "users";
+    }
     
     
 }

@@ -32,4 +32,10 @@ public class KeycloakUserService {
         UsersResource usersResource = realmResource.users();
         return usersResource.list();
     }
+    
+     public String addUser(UserRepresentation user) {
+        
+        realmResource.users().create(user);
+        return "success";
+    }
 }

@@ -51,7 +51,7 @@ public class KeycloakConfig {
                 .clientId(clientId)
                 .username("admin-acces")
                 .password("admin")
-                .clientSecret("sCjLrBjkEh9j7iPAPRMZ0hFxt35cwREV")
+                .clientSecret(clientSecret)
                 .build();
     }
    
