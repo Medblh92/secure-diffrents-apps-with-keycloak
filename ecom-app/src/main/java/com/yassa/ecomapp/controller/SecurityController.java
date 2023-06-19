@@ -38,5 +38,19 @@ public class SecurityController {
         return "redirect:"+ deployment.getAccountUrl() + "/#/security/signingin";
     }
 
+    
+    public String users(
+            RedirectAttributes attributes,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws ServletException {
+        HttpFacade facade = new SimpleHttpFacade(request, response);
+        KeycloakDeployment deployment  =   adapterDeploymentContext.resolveDeployment(facade);
+        attributes.addAttribute("referrer", deployment.getResourceName());
+        attributes.addAttribute("referrer_uri", request.getHeader("referer"));
+         
+
+        return "redirect:"+deployment.getAuthServerBaseUrl()+"/admin/"+deployment.getRealm()+"/console/#/realms/ecom-realm/users";
+    }
 
 }
