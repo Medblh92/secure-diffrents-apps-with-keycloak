@@ -10,28 +10,397 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>users</title>
+    <style>
+       body {
+      background-color: #f8f8f8;
+    }
+    .table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      max-width: 100%;
+      background: #fff;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .table thead {
+      background-color: #1b4f72;
+      color: #fff;
+    }
+    .table th {
+      font-weight: bold;
+      padding: 1rem;
+      vertical-align: top;
+      border-top: 1px solid #ddd;
+      text-align: center;
+    }
+    .table tbody tr {
+      background-color: #f2f2f2;
+      color: #333;
+    }
+    .table tbody tr:hover {
+      background-color: #b3d7ff; /* Updated hover background color */
+      animation: fade-in 0.3s forwards;
+    }
+    @keyframes fade-in {
+      0% {
+        background-color: #b3d7ff; /* Updated hover background color */
+      }
+      100% {
+        background-color: #f2f2f2;
+      }
+    }
+    .table td {
+      padding: 1rem;
+      vertical-align: top;
+      border-top: 1px solid #ddd;
+      text-align: center;
+    }
+    .table-responsive {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    @media (max-width: 767px) {
+      .table-responsive {
+        width: 100%;
+        margin-bottom: 1rem;
+        overflow-y: hidden;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+        border: 1px solid #ddd;
+      }
+      .table-responsive > .table {
+        margin-bottom: 0;
+        background-color: transparent;
+        overflow-x: auto;
+      }
+      .table-responsive > .table > thead > tr > th,
+      .table-responsive > .table > tbody > tr > th,
+      .table-responsive > .table > tfoot > tr > th,
+      .table-responsive > .table > thead > tr > td,
+      .table-responsive > .table > tbody > tr > td,
+      .table-responsive > .table > tfoot > tr > td {
+        white-space: nowrap;
+      }
+      .table-responsive > .table-bordered {
+        border: 0;
+      }
+      .table-responsive > .table-bordered > thead > tr > th:first-child,
+      .table-responsive > .table-bordered > tbody > tr > th:first-child,
+      .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+      .table-responsive > .table-bordered > thead > tr > td:first-child,
+      .table-responsive > .table-bordered > tbody > tr > td:first-child,
+      .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+        border-left: 0;
+      }
+      .table-responsive > .table-bordered > thead > tr > th:last-child,
+      .table-responsive > .table-bordered > tbody > tr > th:last-child,
+      .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+      .table-responsive > .table-bordered > thead > tr > td:last-child,
+      .table-responsive > .table-bordered > tbody > tr > td:last-child,
+      .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+        border-right: 0;
+      }
+      .table-responsive > .table-bordered > tbody > tr:last-child > td,
+      .table-responsive > .table-bordered > tfoot > tr:last-child > td {
+        border-bottom: 0;
+      }
+    }
+    .table-actions {
+      display: flex;
+      justify-content: center;
+    }
+    .table-actions a {
+      display: inline-block;
+      margin-right: 5px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      background-color: #1b4f72;
+      color: #fff;
+      text-decoration: none;
+    }
+    </style>
+<th:block layout:fragment="style">
+    <style>
+    /* Custom styles for the dialog header */
+    .custom-dialog .ui-dialog-titlebar {
+      background-color: #333;
+      color: #fff;
+    }
+
+    .custom-dialog .ui-dialog-title {
+      font-size: 18px;
+    }
+  </style>
+</th:block>
 </head>
 <body>
 <main layout:fragment="content">
-<table class="table">
-        <tr><th>ID</th><th>FirstName</th><th>LastName</th><th>Email</th></tr>
-        <tr th:each="u:${users}">
-            
-            <td  th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.Id}"></td>
-            <td  th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.firstName}"></td>
-            <td  th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.lastName}"></td>
-            <td th:if="${u.attributes['tenantId'][0] == tenant}" th:text="${u.email}"></td>
+    <div class="container">
+      <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                                <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Actions</div>
+                                            <a class="dropdown-item" id="create-user" href="#">Ajouter un utilisateur</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Export</a>
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">  
+    <div class="table-responsive" id="users_container">
+        
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead><tr><th>ID</th><th>FirstName</th><th>LastName</th><th>Email</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr th:each="u:${users}">
 
+                                <td  th:text="${u.Id}"></td>
+                                <td   th:text="${u.firstName}"></td>
+                                <td   th:text="${u.lastName}"></td>
+                                <td  th:text="${u.email}"></td>
+                                <td  class="table-actions">
+                                    <a href="#" id="edit" class="btn-edit">Edit</a>
+                                    <a href="#" class="btn-delete">Delete</a>
+                                    <a href="#" class="btn-view">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
 
-
-        </tr>
     </table>
+   
+         </div>
+                                </div>
+                            </div>
+          </div>
+    <!--<button id="create-user">Create new user</button>-->
     
-     <a class="nav-link" href="/addUser">Login</a>
+                <!--<div id="dialog-form" title="Create new user">-->
+                     <div id="dialog-form" title="Ajouter un utilisateur" class="custom-dialog">
+                   
+                          <div class="card-body">
+                    <!--<p class="validateTips">All form fields are required.</p>-->
+                    <div th:if="${is_user_added} == true" class="alert alert-success" role="alert">
+                        user added with success
+                    </div>
 
+                    <form class="needs-validation" novalidate action="/user"  id="searchForm">
+                        <div class="form-row">
+
+                            <div class="col-md-12 mb-3">
+                                <label for="validationTooltip01">Email</label>
+                                <input type="text" id="emailId"  name="emailId" class="form-control"  required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="validationTooltip01">Username</label>
+                                <input type="text" id="userName" name="userName" class="form-control"   required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="validationTooltip01">First name</label>
+                                <input type="text" id="firstname" name="firstname" class="form-control"   required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="validationTooltip02">Last name</label>
+                                <input type="text" id="lastName"  name="lastName"  class="form-control"  required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label for="validationTooltip02">Password</label>
+                                <input type="password" id="password"  name="password"  class="form-control"   required>
+                                <div class="valid-tooltip">
+                                    Looks good!
+                                </div>
+                            </div>
+                        </div>
+                        <!--<button class="btn btn-primary" type="submit">Submit form</button>-->
+                    </form>
+                          </div>
+                </div>
+
+            </div>
+   
+                    
+                    
 
 </main>
 
-</body>
-</html>
+    <th:block layout:fragment="script">
+   
+        <!--<script th:src="@{/page.js}"></script>-->
 
+
+        <script >
+//            $(document).ready(function () {
+//                $("#table_users").DataTable();
+//
+//            });
+
+
+
+
+
+//    Show dialog jquery_ui
+
+            $(function () {
+//                $("#table_users").DataTable();
+                // Attach a submit handler to the form
+
+
+
+
+                var dialog, form,
+                        // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+                        emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+                        name = $("#userName"),
+                        firstname = $("#firstname"),
+                        email = $("#emailId"),
+                        lastName = $("#lastName"),
+                        password = $("#password"),
+                        allFields = $([]).add(name).add(email).add(password),
+                        tips = $(".validateTips");
+
+                function updateTips(t) {
+                    tips
+                            .text(t)
+                            .addClass("ui-state-highlight");
+                    setTimeout(function () {
+                        tips.removeClass("ui-state-highlight", 1500);
+                    }, 500);
+                }
+
+                function checkLength(o, n, min, max) {
+                    if (o.val().length > max || o.val().length < min) {
+                        o.addClass("ui-state-error");
+                        updateTips("Length of " + n + " must be between " +
+                                min + " and " + max + ".");
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                function checkRegexp(o, regexp, n) {
+                    if (!(regexp.test(o.val()))) {
+                        o.addClass("ui-state-error");
+                        updateTips(n);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                function addUserRoute() {
+//                    $("#searchForm").on("submit", function (event) {
+
+                        // Stop form from submitting normally
+                        event.preventDefault();
+
+                        // Get some values from elements on the page:
+                        var $form = $("#searchForm"),
+                                emailId = $form.find("input[name='emailId']").val(),
+                                userName = $form.find("input[name='userName']").val(),
+                                firstname = $form.find("input[name='firstname']").val(),
+                                lastName = $form.find("input[name='lastName']").val(),
+                                password = $form.find("input[name='password']").val(),
+                                url = $form.attr("action");
+
+                        // Send the data using post
+                        var posting = $.post(url, {
+                            emailId: emailId,
+                            userName: userName,
+                            firstname: firstname,
+                            lastName: lastName,
+                            password: password
+                        });
+
+                        // Put the results in a div
+                        posting.done(function (data) {
+                            var content = $(data).find("#dataTable");
+                            $("#users_container").empty().append(content);
+                            $("#dataTable").DataTable();
+                            dialog.dialog("close");
+//                    alert("sucess");
+                        });
+//                    });
+                }
+                function addUser() {
+                    var valid = true;
+                    allFields.removeClass("ui-state-error");
+//
+//                    valid = valid && checkLength(name, "username", 3, 16);
+//                    valid = valid && checkLength(email, "email", 6, 80);
+//                    valid = valid && checkLength(password, "password", 5, 16);
+//
+//                    valid = valid && checkRegexp(name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
+//                    valid = valid && checkRegexp(email, emailRegex, "eg. ui@jquery.com");
+//                    valid = valid && checkRegexp(password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9");
+//
+//                    if (valid) {
+//                        $("#users tbody").append("<tr>" +
+//                                "<td>" + name.val() + "</td>" +
+//                                "<td>" + email.val() + "</td>" +
+//                                "<td>" + password.val() + "</td>" +
+//                                "</tr>");
+//                        dialog.dialog("close");
+//                    }
+                    addUserRoute();
+                    return valid;
+                }
+
+                dialog = $("#dialog-form").dialog({
+                    autoOpen: false,
+                    height: 600,
+                    width: 500,
+                    modal: true,
+                    buttons: {
+                        "Create an account": addUser,
+                        Cancel: function () {
+                            dialog.dialog("close");
+                        }
+                    },
+                    close: function () {
+                        form[ 0 ].reset();
+                        allFields.removeClass("ui-state-error");
+                    }
+                });
+
+                form = dialog.find("form").on("submit", function (event) {
+                    event.preventDefault();
+                    addUser();
+                });
+
+                $("#create-user").button().on("click", function () {
+                    dialog.dialog("open");
+                });
+            });
+
+
+        </script>
+    </th:block>
+</body>
+
+
+
+
+</html>

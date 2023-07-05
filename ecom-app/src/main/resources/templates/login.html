@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html
+
+
+    >
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+        <style>
+            .back {
+                background: #e2e2e2;
+                width: 100%;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+            }
+
+            .div-center {
+                width: 400px;
+                height: 400px;
+                background-color: #fff;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                max-width: 100%;
+                max-height: 100%;
+                overflow: auto;
+                padding: 1em 2em;
+                border-bottom: 2px solid #ccc;
+                display: table;
+            }
+
+            div.content {
+                display: table-cell;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="back">
+
+
+            <div class="div-center">
+
+
+                <div class="content">
+
+
+                    <h3>Login</h3>
+                    <hr />
+                    <form   action="/mobile/login"  id="loginForm" method="post">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="email" name="username" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnLogin">Login</button>
+                        <hr />
+                        <button type="button" class="btn btn-link">Signup</button>
+                        <button type="button" class="btn btn-link">Reset Password</button>
+
+                    </form>
+
+                </div>
+
+
+
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+        <script>
+            $(function () {
+                var $form = $("#loginForm"),
+                        url = $form.attr("action"),
+                        // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+                        emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+                        email = $("#email"),
+                        password = $("#password");
+                function checkLength(o, n, min, max) {
+                    if (o.val().length > max || o.val().length < min) {
+
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+
+                function checkRegexp(o, regexp, n) {
+                    if (!(regexp.test(o.val()))) {
+
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+                function loginUser() {
+
+                    var valid = true;
+                    valid = valid && checkLength(email, "email", 4, 16);
+                    valid = valid && checkLength(password, "password", 4, 16);
+//                    valid = valid && checkRegexp(email, emailRegex, "eg. ui@jquery.com");
+                    if (valid) {
+                        sendData(email, password);
+                    } else {
+
+                        alert("invalid data !!");
+                    }
+                }
+                function sendData(email, password) {
+//                    alert(url);
+
+//                    var posting = $.post(url, {
+//                        email: email.val(),
+//                        password: password.val()
+//                    },
+//                            );
+//
+//                    posting.done(function (data) {
+//
+//                    });
+                    
+                    
+                     $("#loginForm").submit();
+                }
+
+                $("#btnLogin").button().on("click", () => {
+                    event.preventDefault();
+                    loginUser();
+                });
+            });
+        </script>
+    </body>
+</html>

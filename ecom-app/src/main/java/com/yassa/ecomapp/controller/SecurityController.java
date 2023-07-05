@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class SecurityController {
-    @Autowired
+     @Autowired
     private  AdapterDeploymentContext adapterDeploymentContext;
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) throws ServletException {
